@@ -1,0 +1,458 @@
+" A vimrc file.
+"
+" To use it, copy it to
+"     for Unix:     $HOME/.config/nvim/init.vim
+"     for Windows:  %LOCALAPPDATA%\nvim\init.vim
+
+set backup             " keep a backup file (restore to previous version)
+set undofile           " keep an undo file (undo changes after closing)
+set ruler              " show the cursor position all the time
+set showcmd            " display incomplete commands
+
+" Don't use Ex mode, use Q for formatting
+noremap Q gq
+
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+
+" Switch syntax highlighting on
+syntax on
+
+" Also switch on highlighting the last used search pattern.
+set hlsearch
+
+" I like highlighting strings inside C comments.
+let c_comment_strings=1
+
+" Enable file type detection.
+" Use the default filetype settings, so that mail gets 'textwidth' set to 72,
+" 'cindent' is on in C files, etc.
+" Also load indent files, to automatically do language-dependent indenting.
+filetype plugin indent on
+
+" Put these in an autocmd group, so that we can delete them easily.
+augroup vimrcEx
+	autocmd!
+
+	" For all text files set 'textwidth' to 78 characters.
+	autocmd FileType text setlocal textwidth=78
+
+	" When editing a file, always jump to the last known cursor position.
+	" Don't do it when the position is invalid or when inside an event handler
+	autocmd BufReadPost *
+				\ if line("'\"") >= 1 && line("'\"") <= line("$") |
+				\   execute "normal! g`\"" |
+				\ endif
+
+augroup END
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+	command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis
+				\ | wincmd p | diffthis
+endif
+
+
+" start own config
+
+"
+let mapleader=" "
+
+
+let g:python3_host_prog='C:/Python33/python'
+
+" Plugins: vim-plug
+call plug#begin()
+let g:ctrlp_working_path_mode = 'wra'
+
+
+" sessions / projects
+Plug 'tpope/vim-obsession'
+" Plug 'mhinz/vim-startify'
+
+" very nice file browser
+Plug 'scrooloose/nerdtree'
+let g:NERDTreeCopyCmd="cp -r"
+
+Plug 'vim-scripts/nerdtree-ack'
+Plug 'mileszs/ack.vim'
+let g:ackprg='rg -H --no-heading --vimgrep'
+" let g:ackprg = 'ag --vimgrep'
+
+" comments
+Plug 'tomtom/tcomment_vim'
+" Plug 'tpope/vim-commentary'
+
+" ...
+Plug 'jiangmiao/auto-pairs'
+
+" ...
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+
+" snippets
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+" snippets - optional:
+Plug 'honza/vim-snippets'
+
+" ...
+Plug 'alvan/vim-closetag'
+
+" ...
+" Plug 'valloric/matchtagalways'
+" let g:mta_use_matchparen_group=0
+" " let g:mta_set_default_matchtag_color=0
+" " highlight MatchTag ctermfg=black ctermbg=lightgreen guifg=black guibg=lightgreen
+Plug 'gregsexton/matchtag'
+" Plug 'vim-scripts/matchit.zip'
+
+"
+" Plug 'fholgado/minibufexpl.vim'
+Plug 'mihaifm/bufstop'
+" call BufstopSpeedToggle()
+" au GUIEnter * call BufstopSpeedToggle()
+"
+" Plug 'moll/vim-bbye'
+
+" ...
+Plug 'bkad/camelcasemotion'
+
+" ...
+Plug 'terryma/vim-multiple-cursors'
+
+" ...
+" Plugin 'qpkorr/vim-bufkill'
+
+" full path fuzzy search
+Plug 'ctrlpvim/ctrlp.vim'
+let g:ctrlp_working_path_mode = 'wra'
+let g:ctrlp_prompt_mappings = { 'PrtAdd("/")': ['<space>'], 'PrtAdd(" ")': ['/'] }
+Plug 'FelikZ/ctrlp-py-matcher'
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+let g:ctrlp_root_markers = [ 'dist.git' ]
+
+" The Silver Searcher
+" if executable('ag')
+" ripgrep
+if executable('rg')
+	" Use ag over grep
+	" set grepprg=ag\ --nogroup\ --nocolor
+	set grepprg=rg\ -H\ --no-heading\ --vimgrep
+	" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+	" let g:ctrlp_user_command = 'ag -l --nocolor -g "" %s'
+	let g:ctrlp_user_command = 'rg --files %s'
+	" ag is fast enough that CtrlP doesn't need to cache
+	" let g:ctrlp_use_caching = 0
+	let g:ctrlp_use_caching = 1
+	let g:ctrlp_clear_cache_on_exit = 0
+endif
+
+Plug 'mhinz/vim-grepper'
+" runtime plugin/grepper.vim
+let g:grepper = {}
+let g:grepper.tools = ['rg', 'ag', 'ack', 'grep', 'findstr', 'git']
+let g:grepper.next_tool = '<leader>g'
+nnoremap <leader>g :Grepper<cr>
+nmap gs  <plug>(GrepperOperator)
+xmap gs  <plug>(GrepperOperator)
+"
+" ...
+Plug 'KabbAmine/zeavim.vim', {'on': [
+			\	'Zeavim', 'Docset',
+			\	'<Plug>Zeavim',
+			\	'<Plug>ZVVisSelection',
+			\	'<Plug>ZVKeyDocset',
+			\	'<Plug>ZVMotion'
+			\ ]}
+let g:zv_zeal_executable = 'd:/usr/zeal/zeal.exe'
+let g:zv_docsets_dir = 'd:/usr/zeal/docsets/'
+
+" ...
+" Plug 'vim-scripts/phpfolding.vim'
+nmap <Leader>pf <Esc>:EnableFastPHPFolds<CR>
+nmap <Leader>pF <Esc>:EnablePHPFolds<CR>
+nmap <Leader>pdf <Esc>:DisablePHPFolds<CR>
+" Plug 'swekaj/php-foldexpr.vim'
+Plug 'shawncplus/phpcomplete.vim'
+
+"
+" Plug 'vim-scripts/ShowMarks'
+Plug 'jeetsukumaran/vim-markology'
+let g:markology_enable = 0
+"
+" Plug 'tpope/vim-fugitive'
+" Plug 'junegunn/gv.vim'
+
+"
+Plug 'chrisbra/recover.vim'
+
+" Plug 'brettanomyces/nvim-terminus'
+
+" ...
+Plug 'godlygeek/tabular'
+
+" ...
+Plug 'plasticboy/vim-markdown'
+"
+Plug 'elzr/vim-json'
+"
+Plug 'vim-scripts/sql.vim--Stinson'
+" Plug 'vim-scripts/SQLUtilities'
+"
+Plug 'rodjek/vim-puppet'
+"
+Plug 'chr4/nginx.vim'
+
+"
+Plug 'maksimr/vim-jsbeautify'
+
+"
+Plug 'tyru/open-browser.vim'
+nmap <C-Cr> <Plug>(openbrowser-open)
+
+" swap two windows
+let g:windowswap_map_keys = 0
+Plug 'wesQ3/vim-windowswap'
+nnoremap <silent> <leader>W :call WindowSwap#EasyWindowSwap()<CR>
+
+" status bar
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_powerline_fonts = 1
+let g:airline_mode_map = {
+			\ '__' : '-',
+			\ 'n'  : 'N',
+			\ 'i'  : 'I',
+			\ 'R'  : 'R',
+			\ 'c'  : 'C',
+			\ 'v'  : 'V',
+			\ 'V'  : 'V-L',
+			\ '' : 'V-B',
+			\ 's'  : 'S',
+			\ 'S'  : 'S',
+			\ '' : 'S',
+			\ }
+let g:airline_section_b = '%{winnr()}%{airline#extensions#windowswap#get_status()}'
+let g:airline_inactive_collapse=0
+" " the next two lines seem to do nothing
+let g:airline#extensions#windowswap#enabled = 1
+let g:airline#extensions#windowswap#indicator_text = 'WS'
+
+" one colorscheme pack to rule them all!
+Plug 'flazz/vim-colorschemes'
+Plug 'jacoborus/tender.vim'
+Plug 'arcticicestudio/nord-vim'
+" Plug 'lifepillar/vim-solarized8'
+Plug 'reedes/vim-thematic'
+Plug 'felixhummel/setcolors.vim'
+
+" Plug 'vim-scripts/HJKL'
+" Plug 'mmisono/snake.vim'
+
+" Initialize Plug system
+call plug#end()
+
+
+
+"
+set number
+
+set tabstop=2
+set shiftwidth=2
+
+" autoread +
+set autoread
+autocmd FocusGained * silent! checktime
+
+
+set undodir=~/.vim.nvim/.undo//
+set backupdir=~/.vim.nvim/.backup//
+set dir=~/.vim.nvim/.swap//
+
+set shell=bash
+set shellslash
+
+set ignorecase
+
+set hlsearch
+set incsearch
+
+set encoding=utf-8
+set fileformats=unix,dos
+
+if &history < 10000
+	set history=10000
+endif
+
+set laststatus=2
+
+set wildmenu
+
+
+set listchars=eol:⏎,tab:\|\ ,
+" set listchars=eol:⏎,tab:›\ ,
+" set listchars=eol:⏎,tab:␣\ ,
+" set listchars=eol:▾,tab:▸·,trail:·,nbsp:·
+set list
+
+set scrolloff=6
+
+" set fillchars=vert:\|,fold:-,stlnc:_
+
+set cursorline
+
+set splitbelow
+set splitright
+
+set completeopt+=menuone
+
+set hidden
+
+set title
+
+function! LoadSession()
+	let g:LoadSessionFilePath = fnamemodify(input('Session file: ', '~/Documents/editor.sessions/vim/', 'file'), ':p')
+	set titlestring=%{fnamemodify(g:LoadSessionFilePath,\":t:r\")}:\ %t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
+	exec 'source ' . g:LoadSessionFilePath
+endfunction
+command! LoadSession call LoadSession()
+
+
+set showtabline=2
+
+"
+set tags=./.tags-y;,./.git/tags-y
+
+
+" autocomplete
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+
+
+" Quickfix is always bottom, on its own 'row'
+autocmd FileType qf wincmd J
+" Quickfix - alternative to <CR>
+autocmd FileType qf nmap <buffer> o :let g:MyQfLine = line('.')<CR>:wincmd p<CR>:exe("cc " . g:MyQfLine)<CR>
+
+
+"
+inoremap jk <Esc>
+
+" save
+nnoremap <C-s> :w<CR>
+nnoremap <CR> :w<CR>
+inoremap <C-s> <Esc>:w<CR>a
+
+" comment
+nnoremap <Leader>q :TComment<CR>
+vnoremap <Leader>q :TComment<CR>
+" nnoremap <Leader>q :Commentary<CR>
+" vnoremap <Leader>q :Commentary<CR>
+
+" move line(s)
+nnoremap <M-j> :m .+1<CR>==
+nnoremap <M-k> :m .-2<CR>==
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-j> :m '>+1<CR>gv=gv
+vnoremap <M-k> :m '<-2<CR>gv=gv
+
+"
+nmap <silent> <A-1> :setlocal foldlevel=0<CR>
+nmap <silent> <A-2> :setlocal foldlevel=1<CR>
+nmap <silent> <A-3> :setlocal foldlevel=2<CR>
+nmap <silent> <A-4> :setlocal foldlevel=3<CR>
+nmap <silent> <A-5> :setlocal foldlevel=4<CR>
+nmap <silent> <A-6> :setlocal foldlevel=5<CR>
+nmap <silent> <A-7> :setlocal foldlevel=6<CR>
+nmap <silent> <A-8> :setlocal foldlevel=7<CR>
+nmap <silent> <A-9> :setlocal foldlevel=8<CR>
+nmap <silent> <A-0> :setlocal foldlevel=99<CR>
+
+"
+map <C-j> <C-w><C-j>
+map <C-k> <C-w><C-k>
+map <C-L> <C-w><C-l>
+map <C-h> <C-w><C-h>
+nmap <Leader>r <C-w>p
+
+"
+vnoremap // y/<C-R>"<CR>
+
+"
+vnoremap < <gv
+vnoremap > >gv
+
+"
+nnoremap <silent> <C-S-tab> :tabprevious<CR>
+nnoremap <silent> tp :tabprevious<CR>
+nnoremap <silent> <C-tab> :tabnext<CR>
+nnoremap <silent> tn :tabnext<CR>
+let g:lasttab = 1 | nmap <silent> <Leader>a :exe "tabn ".g:lasttab<CR> | au TabLeave * let g:lasttab = tabpagenr()
+
+"
+map <silent> <Leader>l :redraw!<CR>
+
+"
+nmap <silent> <Leader>t :NERDTreeToggle<CR>
+nmap <silent> <Leader>T :NERDTreeFind<CR>
+
+"
+nmap <Leader>d yyP
+vmap <Leader>d yP
+
+"
+nmap <silent> <Leader>` <C-^>
+
+" buffers
+" ; use `exe` to prevent trailing whitespace
+exe "nmap <silent> <Leader><Tab> :ls<CR>:b "
+nmap <silent> <Leader>b :BufstopFast<CR>
+
+"
+map <silent> <Leader>w <Plug>CamelCaseMotion_w
+map <silent> <Leader>B <Plug>CamelCaseMotion_b
+
+"
+nnoremap <silent> <Space> :noh<CR>:<backspace>
+
+" Copy file path to system clipboard
+nnoremap <Leader>cp :let @+=expand("%:p")<CR>
+
+" Switch &shell: cmd|bash
+nnoremap <silent> <Leader>s :let &shell=eval("(&shell == 'cmd' ? 'bash' : 'cmd')")<CR>
+
+" Relative or absolute number lines
+function! NumberToggle()
+	if(&nu == 1)
+		" set nu!
+		set rnu
+	else
+		set nornu
+		set nu
+	endif
+endfunction
+nnoremap <silent> <Leader>n :call NumberToggle()<CR>
+
+"
+nnoremap <silent> <F7> "=strftime("%A, %B %d, %Y, %H:%M") . printf(' - %.2f%%', str2float(strftime("%j")) / 365 * 100)<CR>P
+inoremap <silent> <F7> <C-r>=strftime("%A, %B %d, %Y, %H:%M") . printf(' - %.2f%%', str2float(strftime("%j")) / 365 * 100)<CR>
+
+" F5 in command-line window: run and return to the same line
+autocmd CmdwinEnter * nnoremap <buffer> <F5> :let g:CmdWindowLineMark=line(".")<CR><CR>q::execute "normal ".g:CmdWindowLineMark."G"<CR>
+
+"
+" nnoremap <leader>% :MtaJumpToOtherTag<CR>
+
+
+map <silent> <F11>   <Esc>:call GuiWindowFullScreen(1)<CR>
+map <silent> <S-F11> <Esc>:call GuiWindowFullScreen(0)<CR>
+
+
+" looks
+" moved to ginit.vim
+
