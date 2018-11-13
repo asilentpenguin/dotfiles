@@ -170,13 +170,14 @@ xmap gs  <plug>(GrepperOperator)
 
 
 " ...
-Plug 'KabbAmine/zeavim.vim', {'on': [
-		\	'Zeavim', 'Docset',
-		\	'<Plug>Zeavim',
-		\	'<Plug>ZVVisSelection',
-		\	'<Plug>ZVKeyDocset',
-		\	'<Plug>ZVMotion'
-		\ ]}
+Plug 'KabbAmine/zeavim.vim'
+" Plug 'KabbAmine/zeavim.vim', {'on': [
+" 		\	'Zeavim', 'Docset',
+" 		\	'<Plug>Zeavim',
+" 		\	'<Plug>ZVVisSelection',
+" 		\	'<Plug>ZVKeyDocset',
+" 		\	'<Plug>ZVMotion'
+" 		\ ]}
 let g:zv_zeal_executable = 'd:/usr/zeal/zeal.exe'
 let g:zv_docsets_dir = 'd:/usr/zeal/docsets/'
 
@@ -291,13 +292,21 @@ set shiftwidth=2
 set autoread
 autocmd FocusGained * silent! checktime   " nvim only
 
-set undodir=~/.vim/.undo//
 set undofile
 set backup
-set backupdir=~/.vim/.backup//
-set dir=~/.vim/.swap//
+if has('nvim')
+	set undodir=~/.vim.nvim/.undo//
+	set backupdir=~/.vim.nvim/.backup//
+	set dir=~/.vim.nvim/.swap//
+else
+	set undodir=~/.vim.gvim/.undo//
+	set backupdir=~/.vim.gvim/.backup//
+	set dir=~/.vim.gvim/.swap//
+endif
 
-set shell=bash   " nvim only
+" if has('nvim')
+" 	set shell=bash   " nvim only
+" endif
 set shellslash
 
 set ignorecase
