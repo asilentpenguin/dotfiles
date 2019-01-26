@@ -24,6 +24,8 @@ if has('gui_running')
 	" Use text drawing for tabs
 	set guioptions-=e
 
+let b:colorscheme = get(g:, 'colors_name', 'default')
+if b:colorscheme == 'default'
 	" colorscheme rdark
 	" colorscheme min
 	" colorscheme oxeded
@@ -45,6 +47,7 @@ if has('gui_running')
 	" " let g:airline_theme = 'solarized'
 	" " let g:airline_theme = 'papercolor'
 	" " let g:airline_theme = 'badwolf'
+endif
 
 	" start maximized
 	au GUIEnter * simalt ~x
