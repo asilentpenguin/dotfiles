@@ -3,54 +3,54 @@
 " nvim only
 if has('nvim')
 
-set ruler              " show the cursor position all the time
-set showcmd            " display incomplete commands
+	set ruler              " show the cursor position all the time
+	set showcmd            " display incomplete commands
 
-" Don't use Ex mode, use Q for formatting
-noremap Q gq
+	" Don't use Ex mode, use Q for formatting
+	noremap Q gq
 
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
+	" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+	" so that you can undo CTRL-U after inserting a line break.
+	inoremap <C-U> <C-G>u<C-U>
 
-" Switch syntax highlighting on
-syntax on
+	" Switch syntax highlighting on
+	syntax on
 
-" Also switch on highlighting the last used search pattern.
-set hlsearch
+	" Also switch on highlighting the last used search pattern.
+	set hlsearch
 
-" I like highlighting strings inside C comments.
-let c_comment_strings=1
+	" I like highlighting strings inside C comments.
+	let c_comment_strings=1
 
-" Enable file type detection.
-" Use the default filetype settings, so that mail gets 'textwidth' set to 72,
-" 'cindent' is on in C files, etc.
-" Also load indent files, to automatically do language-dependent indenting.
-filetype plugin indent on
+	" Enable file type detection.
+	" Use the default filetype settings, so that mail gets 'textwidth' set to 72,
+	" 'cindent' is on in C files, etc.
+	" Also load indent files, to automatically do language-dependent indenting.
+	filetype plugin indent on
 
-" Put these in an autocmd group, so that we can delete them easily.
-augroup vimrcEx
-	autocmd!
+	" Put these in an autocmd group, so that we can delete them easily.
+	augroup vimrcEx
+		autocmd!
 
-	" For all text files set 'textwidth' to 78 characters.
-	autocmd FileType text setlocal textwidth=78
+		" For all text files set 'textwidth' to 78 characters.
+		autocmd FileType text setlocal textwidth=78
 
-	" When editing a file, always jump to the last known cursor position.
-	" Don't do it when the position is invalid or when inside an event handler
-	autocmd BufReadPost *
-				\ if line("'\"") >= 1 && line("'\"") <= line("$") |
-				\   execute "normal! g`\"" |
-				\ endif
+		" When editing a file, always jump to the last known cursor position.
+		" Don't do it when the position is invalid or when inside an event handler
+		autocmd BufReadPost *
+					\ if line("'\"") >= 1 && line("'\"") <= line("$") |
+					\   execute "normal! g`\"" |
+					\ endif
 
-augroup END
+	augroup END
 
-" Convenient command to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-if !exists(":DiffOrig")
-	command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis
-				\ | wincmd p | diffthis
-endif
+	" Convenient command to see the difference between the current buffer and the
+	" file it was loaded from, thus the changes you made.
+	" Only define it when not defined already.
+	if !exists(":DiffOrig")
+		command DiffOrig vert new | set buftype=nofile | read ++edit # | 0d_ | diffthis
+					\ | wincmd p | diffthis
+	endif
 
 endif
 " nvim only
@@ -60,12 +60,13 @@ endif
 
 "
 
-" nvim only
 let mapleader=" "
 
-" let g:python3_host_prog='C:/Python33/python'
-" nvim only
-
+" nvim only?
+if has('nvim')
+	let g:python3_host_prog='C:/Python33/python'
+	" let g:python3_host_prog='C:/Python36/python'
+endif
 
 
 if has('gui_running') || has('nvim')
@@ -194,6 +195,11 @@ Plug 'jeetsukumaran/vim-markology'
 let g:markology_enable = 0
 
 "
+if has('python3')
+	Plug 'vim-vdebug/vdebug'
+endif
+
+"
 " Plug 'tpope/vim-fugitive'
 " Plug 'junegunn/gv.vim'
 
@@ -226,6 +232,12 @@ Plug 'chr4/nginx.vim'
 
 "
 Plug 'maksimr/vim-jsbeautify'
+
+"
+" Plug 'junegunn/rainbow_parentheses.vim'
+
+"
+" Plug 'ap/vim-css-color'
 
 "
 Plug 'tyru/open-browser.vim'
@@ -266,6 +278,11 @@ let g:airline#extensions#windowswap#indicator_text = 'WS'
 Plug 'flazz/vim-colorschemes'
 Plug 'jacoborus/tender.vim'
 Plug 'arcticicestudio/nord-vim'
+Plug 'cocopon/iceberg.vim'
+let g:colors_name = 'falcon' | Plug 'fenetikm/falcon'
+Plug 'felipesousa/rupza'
+Plug 'sonph/onehalf', {'rtp': 'vim/'}
+Plug 'sindresorhus/focus', {'rtp': 'vim'}
 Plug 'reedes/vim-thematic'
 "
 Plug 'felixhummel/setcolors.vim'
@@ -290,7 +307,9 @@ set shiftwidth=2
 
 " autoread +
 set autoread
-autocmd FocusGained * silent! checktime   " nvim only
+" if has('nvim')
+	autocmd FocusGained * silent! checktime   " nvim only
+" endif
 
 set undofile
 set backup
@@ -299,9 +318,23 @@ if has('nvim')
 	set backupdir=~/.vim.nvim/.backup//
 	set dir=~/.vim.nvim/.swap//
 else
+
 	set undodir=~/.vim.gvim/.undo//
 	set backupdir=~/.vim.gvim/.backup//
 	set dir=~/.vim.gvim/.swap//
+
+	" tried and failed:
+	" set undodir=d:/vim/gvim/undo//
+	" set backupdir=d:/vim/gvim/backup//
+	" set dir=d:/vim/gvim/swap//
+
+	" tried and failed:
+	" set undodir=c:/vim/gvim/undo//
+	" set backupdir=c:/vim/gvim/backup//
+	" set dir=c:/vim/gvim/swap//
+
+	set noundofile
+
 endif
 
 " if has('nvim')
@@ -363,11 +396,13 @@ augroup PHP
 	" Check for PHP syntax errors after saving a file
 	" autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
 
+	" autocmd BufEnter *.html :setlocal filetype=php
+
 augroup END
 " gvim only
 
 " autocomplete
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP   " nvim only
+" autocmd FileType php set omnifunc=phpcomplete#CompletePHP   " nvim only?  (gvim uses it in an `augroup`)
 
 " nvim only
 " Quickfix is always bottom, on its own 'row'
@@ -473,7 +508,7 @@ map <silent> <Leader>B <Plug>CamelCaseMotion_b
 nnoremap <silent> <Space> :noh<CR>:<backspace>
 
 " Copy file path to system clipboard
-nnoremap <Leader>cp :let @+=expand("%:p")<CR>
+nnoremap <silent> <Leader>cp :let @+=expand("%:p")<CR>
 
 " Switch &shell: cmd|bash
 nnoremap <silent> <Leader>s :let &shell=eval("(&shell == 'cmd' ? 'bash' : 'cmd')")<CR>
@@ -482,7 +517,7 @@ nnoremap <silent> <Leader>s :let &shell=eval("(&shell == 'cmd' ? 'bash' : 'cmd')
 nnoremap <silent> <Leader>E :set expandtab!<CR>
 
 "
-nnoremap <Leader>L :set list!<CR>
+nnoremap <silent> <Leader>L :set list!<CR>
 
 :nnoremap <silent> <F7> "=strftime("%A, %B %d, %Y, %H:%M") . printf(" - %.2f%%", str2float(strftime("%j")) / 365 * 100)<CR>P
 :inoremap <silent> <F7> <C-r>=strftime("%A, %B %d, %Y, %H:%M") . printf(" - %.2f%%", str2float(strftime("%j")) / 365 * 100)<CR>
