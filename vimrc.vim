@@ -325,7 +325,7 @@ set laststatus=2
 
 set wildmenu
 
-set listchars=eol:⏎,tab:\|\ ,
+" set listchars=eol:⏎,tab:\|\ ,
 set listchars=eol:⏎,tab:»\ ,trail:·,nbsp:·
 
 set list

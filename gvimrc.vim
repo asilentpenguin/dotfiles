@@ -24,27 +24,30 @@ set guioptions -=r
 " Use text drawing for tabs
 set guioptions-=e
 
-" colorscheme rdark
-" colorscheme min
-" colorscheme oxeded
-" colorscheme hilal # ?
-" colorscheme herokudoc-gvim
-colorscheme summerfruit
-" colorscheme anderson
-" hi SpecialKey guifg=#496054 guibg=#262422
-" hi SpecialKey guifg=#334036 guibg=#262422
-" hi SpecialKey guifg=#445248 guibg=#262422
-" hi SpecialKey guifg=#7ba092 guibg=#262422
-" hi SpecialKey guifg=#333333 guibg=#262422
-" colorscheme PaperColor
-" colorscheme molokai
-" colorscheme solarized8_dark_high
+let b:colorscheme = get(g:, 'colors_name', 'default')
+if b:colorscheme == 'default'
+	" colorscheme rdark
+	" colorscheme min
+	" colorscheme oxeded
+	" colorscheme hilal # ?
+	" colorscheme herokudoc-gvim
+	colorscheme summerfruit
+	" colorscheme anderson
+	" hi SpecialKey guifg=#496054 guibg=#262422
+	" hi SpecialKey guifg=#334036 guibg=#262422
+	" hi SpecialKey guifg=#445248 guibg=#262422
+	" hi SpecialKey guifg=#7ba092 guibg=#262422
+	" hi SpecialKey guifg=#333333 guibg=#262422
+	" colorscheme PaperColor
+	" colorscheme molokai
+	" colorscheme solarized8_dark_high
 
-let g:airline_theme = 'serene'
-" " let g:airline_theme = 'powerlineish'
-" " let g:airline_theme = 'solarized'
-" " let g:airline_theme = 'papercolor'
-" " let g:airline_theme = 'badwolf'
+	let g:airline_theme = 'serene'
+	" " let g:airline_theme = 'powerlineish'
+	" " let g:airline_theme = 'solarized'
+	" " let g:airline_theme = 'papercolor'
+	" " let g:airline_theme = 'badwolf'
+endif
 
 " start maximized
 au GUIEnter * simalt ~x
