@@ -209,7 +209,11 @@ Plug 'sjl/gundo.vim'
 Plug 'godlygeek/tabular'
 
 " ...
-Plug 'plasticboy/vim-markdown'
+" Plug 'plasticboy/vim-markdown'
+
+let g:markdown_enable_spell_checking = 0
+let g:markdown_mapping_switch_status = '<Leader>s'
+Plug 'gabrielelana/vim-markdown'
 
 "
 Plug 'elzr/vim-json'
