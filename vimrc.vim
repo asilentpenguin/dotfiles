@@ -64,8 +64,8 @@ let mapleader=" "
 
 " nvim only?
 if has('nvim')
-	let g:python3_host_prog='C:/Python33/python'
-	" let g:python3_host_prog='C:/Python36/python'
+	" let g:python3_host_prog='C:/Python33/python'
+	let g:python3_host_prog='C:/Python36/python'
 endif
 
 
@@ -183,7 +183,7 @@ let g:zv_zeal_executable = 'd:/usr/zeal/zeal.exe'
 let g:zv_docsets_dir = 'd:/usr/zeal/docsets/'
 
 " ...
-" Plug 'vim-scripts/phpfolding.vim'
+Plug 'vim-scripts/phpfolding.vim'
 nmap <Leader>pf <Esc>:EnableFastPHPFolds<CR>
 nmap <Leader>pF <Esc>:EnablePHPFolds<CR>
 nmap <Leader>pdf <Esc>:DisablePHPFolds<CR>
@@ -215,11 +215,14 @@ Plug 'sjl/gundo.vim'
 Plug 'godlygeek/tabular'
 
 " ...
-" Plug 'plasticboy/vim-markdown'
+Plug 'plasticboy/vim-markdown'
 
 let g:markdown_enable_spell_checking = 0
 let g:markdown_mapping_switch_status = '<Leader>s'
-Plug 'gabrielelana/vim-markdown'
+" Plug 'gabrielelana/vim-markdown'
+
+"
+Plug 'tmhedberg/simpylfold'
 
 "
 Plug 'elzr/vim-json'
@@ -464,10 +467,6 @@ nmap <silent> <A-7> :setlocal foldlevel=6<CR>
 nmap <silent> <A-8> :setlocal foldlevel=7<CR>
 nmap <silent> <A-9> :setlocal foldlevel=8<CR>
 nmap <silent> <A-0> :setlocal foldlevel=99<CR>
-
-nmap <Leader>pf <Esc>:EnableFastPHPFolds<CR>
-nmap <Leader>pF <Esc>:EnablePHPFolds<CR>
-nmap <Leader>pdf <Esc>:DisableFastPHPFolds<CR>
 
 "
 " nnoremap <silent> <c-w>= :wincmd =<cr>:QfResizeWindows<cr>
