@@ -164,7 +164,8 @@ Plug 'mhinz/vim-grepper'
 let g:grepper = {}
 let g:grepper.tools = ['rg', 'ag', 'ack', 'grep', 'findstr', 'git']
 let g:grepper.next_tool = '<leader>g'
-" nvim only: (1)
+" the default ends with '.' so its impossible to specify the sub-path(s) to " search in
+au VimEnter * let g:grepper.rg.grepprg = 'rg -H --no-heading --vimgrep $* '
 nnoremap <leader>g :Grepper<cr>
 nmap gs  <plug>(GrepperOperator)
 xmap gs  <plug>(GrepperOperator)
@@ -188,12 +189,17 @@ let g:zv_docsets_dir = "c:/usr/zeal/docsets/"
 " let g:zv_docsets_dir = '"/c/Program\ Files/Zeal/docsets/"'
 
 " ...
-Plug 'vim-scripts/phpfolding.vim'
+" Plug 'vim-scripts/phpfolding.vim'
 nmap <Leader>pf <Esc>:EnableFastPHPFolds<CR>
 nmap <Leader>pF <Esc>:EnablePHPFolds<CR>
 nmap <Leader>pdf <Esc>:DisablePHPFolds<CR>
 " Plug 'swekaj/php-foldexpr.vim'
 Plug 'shawncplus/phpcomplete.vim'
+
+" html inside .php files
+Plug 'jsit/php.vim-html-enhanced'   " quite ok; fork of vim-scripts/php.vim-html-enhanced, maybe there's a better one
+" Plug 'b31o8321/php.vim-html-enhanced'   " sets sw!
+Plug '2072/PHP-Indenting-for-VIm'   " seems not to do anything
 
 "
 Plug 'jeetsukumaran/vim-markology'
@@ -222,19 +228,30 @@ Plug 'godlygeek/tabular'
 " ...
 Plug 'plasticboy/vim-markdown'
 
-let g:markdown_enable_spell_checking = 0
-let g:markdown_mapping_switch_status = '<Leader>s'
-" Plug 'gabrielelana/vim-markdown'
-
-"
-Plug 'tmhedberg/simpylfold'
-
 "
 Plug 'elzr/vim-json'
 
 "
+" Plug 'tmhedberg/simpylfold'
+Plug 'klen/python-mode'
+let g:pymode_python = 'python3'
+let g:pymode_rope = 0
+let g:pymode_lint = 1
+let g:pymode_lint_on_write = 0
+let g:pymode_run_bind = '<leader>R'
+" let g:pymode_lint_options_pylint = { 'clear_cache': 1 }
+
+"
 Plug 'vim-scripts/sql.vim--Stinson'
 " Plug 'vim-scripts/SQLUtilities'
+
+"
+Plug 'leafOfTree/vim-vue-plugin'
+" Plug 'leafOfTree/posva/vim-vue.git'
+
+"
+Plug 'ElmCast/elm-vim'
+" let g:elm_setup_keybindings = 0
 
 "
 Plug 'rodjek/vim-puppet'
@@ -243,13 +260,16 @@ Plug 'rodjek/vim-puppet'
 Plug 'chr4/nginx.vim'
 
 "
+Plug 'digitaltoad/vim-pug'
+
+"
 Plug 'maksimr/vim-jsbeautify'
 
 "
 " Plug 'junegunn/rainbow_parentheses.vim'
 
 "
-" Plug 'ap/vim-css-color'
+Plug 'ap/vim-css-color'
 
 "
 Plug 'tyru/open-browser.vim'
@@ -296,12 +316,14 @@ Plug 'felipesousa/rupza'
 Plug 'sonph/onehalf', {'rtp': 'vim/'}
 Plug 'sindresorhus/focus', {'rtp': 'vim'}
 Plug 'reedes/vim-thematic'
+Plug 'tyrannicaltoucan/vim-quantum'
+Plug 'flrnprz/candid.vim'
 "
 Plug 'felixhummel/setcolors.vim'
 
 " Plug 'vim-scripts/HJKL'
 " Plug 'mmisono/snake.vim'
-" Plug 'uguu-org/vim-matrix-screensaver'
+Plug 'uguu-org/vim-matrix-screensaver'
 
 " Initialize Plug system
 call plug#end()
@@ -370,7 +392,7 @@ set laststatus=2
 
 set wildmenu
 
-" set listchars=eol:⏎,tab:\|\ ,
+set listchars=eol:⏎,tab:\|\ ,
 set listchars=eol:⏎,tab:»\ ,trail:·,nbsp:·
 
 set list
@@ -383,6 +405,8 @@ set cursorline
 
 set splitbelow
 set splitright
+
+set switchbuf=useopen,usetab
 
 set completeopt+=menuone
 set infercase   " Try to adjust insert completions for case.
@@ -409,6 +433,18 @@ augroup PHP
 	" autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
 
 	" autocmd BufEnter *.html :setlocal filetype=php
+"
+if has('python3')
+	let g:vdebug_options = {
+				\ 'path_maps' : {"/www/": "y:/"},
+				\ 'break_on_open' : 0,
+				\ }
+	" exec 'VdebugPathMap "/www/" "y:/"'
+	" exec 'VdebugOpt break_on_open 0'
+	" let g:vdebug_options.path_maps = {"/www/": "y:/"}
+	" let g:vdebug_options.break_on_open = 0
+endif
+
 
 augroup END
 " gvim only
@@ -419,15 +455,14 @@ augroup END
 " nvim only
 " Quickfix is always bottom, on its own 'row'
 autocmd FileType qf wincmd J
+" Quickfix - fix for <CR>
+autocmd FileType qf nmap <buffer> <CR> :let g:MyQfLine = line('.')<CR>:wincmd p<CR>:exe("cc " . g:MyQfLine)<CR>
 " Quickfix - alternative to <CR>
 " autocmd FileType qf nmap <buffer> o :let g:MyQfLine = line('.')<CR>:wincmd p<CR>:exe("cc " . g:MyQfLine)<CR>
-" Quickfix - fix [attempt] for <CR>
-autocmd FileType qf nmap <buffer> <CR> :let g:MyQfLine = line('.')<CR>:wincmd p<CR>:exe("cc " . g:MyQfLine)<CR>
 
 
 "
 nnoremap =+ =i}
-
 
 "
 inoremap jk <Esc>
@@ -443,8 +478,14 @@ vnoremap <Leader>q :TComment<CR>
 " nnoremap <Leader>q :Commentary<CR>
 " vnoremap <Leader>q :Commentary<CR>
 
-"
-nnoremap <leader>g :Grepper<cr>
+" cursor moving in insert mode - as in terminal
+imap <C-a> <ESC>I
+imap <C-e> <ESC>A
+inoremap <M-f> <ESC><Space>Wi
+inoremap <M-b> <Esc>Bi
+inoremap <M-d> <C-O>de
+" inoremap <M-d> <ESC>cW
+inoremap <C-d> <C-O>x
 
 " move line(s)
 nnoremap <M-j> :m .+1<CR>==
@@ -454,14 +495,14 @@ inoremap <M-k> <Esc>:m .-2<CR>==gi
 vnoremap <M-j> :m '>+1<CR>gv=gv
 vnoremap <M-k> :m '<-2<CR>gv=gv
 
-"
+" focus window
 map <C-j> <C-w><C-j>
 map <C-k> <C-w><C-k>
 map <C-l> <C-w><C-l>
 map <C-h> <C-w><C-h>
 nmap <Leader>r <C-w>p
 
-"
+" fold level
 nmap <silent> <A-1> :setlocal foldlevel=0<CR>
 nmap <silent> <A-2> :setlocal foldlevel=1<CR>
 nmap <silent> <A-3> :setlocal foldlevel=2<CR>
@@ -473,11 +514,15 @@ nmap <silent> <A-8> :setlocal foldlevel=7<CR>
 nmap <silent> <A-9> :setlocal foldlevel=8<CR>
 nmap <silent> <A-0> :setlocal foldlevel=99<CR>
 
+nmap <Leader>pf <Esc>:EnableFastPHPFolds<CR>
+nmap <Leader>pF <Esc>:EnablePHPFolds<CR>
+nmap <Leader>pdf <Esc>:DisableFastPHPFolds<CR>
+
 "
 " nnoremap <silent> <c-w>= :wincmd =<cr>:QfResizeWindows<cr>
 
 "
-vnoremap // y/<C-R>"<CR>
+vnoremap // "vy/<C-R>v<CR>
 
 "
 vnoremap < <gv
@@ -485,9 +530,15 @@ vnoremap > >gv
 
 "
 nnoremap <silent> <C-S-tab> :tabprevious<CR>
-nnoremap <silent> tp :tabprevious<CR>
+" nnoremap <silent> tp :tabprevious<CR>
+nnoremap <expr> <silent> tp ':<C-U>tabprevious' . (v:count1) . '<CR>'
 nnoremap <silent> <C-tab> :tabnext<CR>
-nnoremap <silent> tn :tabnext<CR>
+" nnoremap <silent> tn :tabnext<CR>
+" tabn is different than tabp in that it doesn't wrap at the end when used with a counter
+nnoremap <expr> <silent> tn ':<C-U>tabnext ' . (v:count ? ( (tabpagenr('$') - tabpagenr() < v:count) ? (v:count + tabpagenr() - tabpagenr('$')) : ('+' . v:count) ) : '') . '<CR>'
+" nnoremap <expr> <silent> tn ':tabnext' . (v:count ? (' +' . v:count) : '') . '<CR>'
+nnoremap <silent> t0 :tabfirst<CR>
+nnoremap <silent> t9 :tablast<CR>
 let g:lasttab = 1 | nmap <silent> <Leader>a :exe "tabn ".g:lasttab<CR> | au TabLeave * let g:lasttab = tabpagenr()
 
 "
@@ -500,6 +551,8 @@ map <silent> <Leader>T :NERDTreeFind<CR>
 "
 nmap <Leader>d yyP
 vmap <Leader>d yP
+nmap <Leader>D yyp
+vmap <Leader>D yp
 
 "
 nmap <silent> <Leader>` <C-^>
@@ -519,7 +572,7 @@ nnoremap <silent> <Space> :noh<CR>:<backspace>
 nnoremap <silent> <Leader>cp :let @+=expand("%:p")<CR>
 
 " Switch &shell: cmd|bash
-nnoremap <silent> <Leader>s :let &shell=eval("(&shell == 'cmd' ? 'bash' : 'cmd')")<CR>
+nnoremap <silent> <Leader>S :let &shell=eval("(&shell == 'cmd' ? 'bash' : 'cmd')")<CR>
 
 "
 nnoremap <silent> <Leader>E :set expandtab!<CR>
@@ -527,8 +580,15 @@ nnoremap <silent> <Leader>E :set expandtab!<CR>
 "
 nnoremap <silent> <Leader>L :set list!<CR>
 
-:nnoremap <silent> <F7> "=strftime("%A, %B %d, %Y, %H:%M") . printf(" - %.2f%%", str2float(strftime("%j")) / 365 * 100)<CR>P
-:inoremap <silent> <F7> <C-r>=strftime("%A, %B %d, %Y, %H:%M") . printf(" - %.2f%%", str2float(strftime("%j")) / 365 * 100)<CR>
+"
+nnoremap <silent> <Leader>C :call css_color#toggle()<CR>
+
+nnoremap <silent> <F7> "=strftime("%A, %B %d, %Y, %H:%M / W%V") . printf(" - %.2f%%", str2float(strftime("%j")) / 365 * 100)<CR>P
+inoremap <silent> <F7> <C-r>=strftime("%A, %B %d, %Y, %H:%M / W%V") . printf(" - %.2f%%", str2float(strftime("%j")) / 365 * 100)<CR>
+
+"
+nnoremap <silent> <Leader>f :exe 'let b:Wse = matchstr(airline#extensions#whitespace#check(), ''\[\(.\+:\)\?\zs\(\d\+\)\ze\]'') \| if (b:Wse != "") \| exe "normal " . b:Wse . "G" \| endif'<CR>
+
 
 " F5 in command-line window: run and return to the same line
 autocmd CmdwinEnter * nnoremap <buffer> <F5> :let g:CmdWindowLineMark=line(".")<CR><CR>q::execute "normal ".g:CmdWindowLineMark."G"<CR>
@@ -553,6 +613,9 @@ endif
 
 
 " utils
+" set cpoptions -=s
+" set cpoptions +=S
+" set sessionoptions +=localoptions
 function! LoadSession()
 	let g:LoadSessionFilePath = fnamemodify(input('Session file: ', '~/Documents/editor.sessions/vim/', 'file'), ':p')
 	set titlestring=%{fnamemodify(g:LoadSessionFilePath,\":t:r\")}:\ %t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
