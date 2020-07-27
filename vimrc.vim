@@ -84,6 +84,7 @@ Plug 'tpope/vim-obsession'
 " very nice file browser
 Plug 'scrooloose/nerdtree'
 let g:NERDTreeCopyCmd="cp -r"
+let g:NERDTreeShowHidden=1
 
 Plug 'vim-scripts/nerdtree-ack'
 Plug 'mileszs/ack.vim'
@@ -616,10 +617,18 @@ endif
 " set cpoptions -=s
 " set cpoptions +=S
 " set sessionoptions +=localoptions
+function! LoadSessionFileComplete(A,L,P)
+	return glob(a:A . '*.vim')
+endfunction
 function! LoadSession()
-	let g:LoadSessionFilePath = fnamemodify(input('Session file: ', '~/Documents/editor.sessions/vim/', 'file'), ':p')
-	set titlestring=%{fnamemodify(g:LoadSessionFilePath,\":t:r\")}:\ %t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
+	let g:LoadSessionFilePath = fnamemodify(input('Session file: ', fnamemodify('~/Documents/editor.sessions/vim/', ':p'), 'custom,LoadSessionFileComplete'), ':p')
+	let g:LoadSessionName = fnamemodify(g:LoadSessionFilePath, ":t:r")
+	set titlestring=%{g:LoadSessionName}:\ %t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
 	exec 'source ' . g:LoadSessionFilePath
+	let g:LoadSessionStartupPath = fnamemodify(g:LoadSessionFilePath, ":h") . '/' . g:LoadSessionName . '.html'
+	if filereadable(g:LoadSessionStartupPath)
+		silent call OpenBrowser('file://' . g:LoadSessionStartupPath)
+	endif
 endfunction
 command! LoadSession call LoadSession()
 

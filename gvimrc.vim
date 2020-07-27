@@ -22,10 +22,8 @@ if has('gui_running')
 	set guioptions -=L
 	set guioptions -=r
 	" Use text drawing for tabs
-	set guioptions-=e
+	set guioptions -=e
 
-let b:colorscheme = get(g:, 'colors_name', 'default')
-if b:colorscheme == 'default'
 	" colorscheme rdark
 	" colorscheme min
 	" colorscheme oxeded
@@ -47,7 +45,6 @@ if b:colorscheme == 'default'
 	" " let g:airline_theme = 'solarized'
 	" " let g:airline_theme = 'papercolor'
 	" " let g:airline_theme = 'badwolf'
-endif
 
 	" start maximized
 	au GUIEnter * simalt ~x
@@ -59,6 +56,8 @@ endif   " if has('gui_running')
 
 
 if has('nvim')
+
+	GuiTabline 0
 
 	map <silent> <F11>   <Esc>:call GuiWindowFullScreen(1)<CR>
 	map <silent> <S-F11> <Esc>:call GuiWindowFullScreen(0)<CR>
