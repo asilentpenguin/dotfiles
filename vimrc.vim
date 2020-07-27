@@ -432,7 +432,7 @@ augroup PHP
 	" Check for PHP syntax errors after saving a file
 	" autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
 
-	" autocmd BufEnter *.html :setlocal filetype=php
+	autocmd BufEnter *.html :setlocal filetype=php
 "
 if has('python3')
 	let g:vdebug_options = {
