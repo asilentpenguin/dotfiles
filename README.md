@@ -2,6 +2,10 @@
 
 ## VIM configs - gvim, neovim
 
+0. Install VIM
+  - gvim: <https://tuxproject.de/projects/vim/>
+  - neovim: <https://github.com/neovim/neovim/releases>
+
 1. Install `vim-plug` <https://github.com/junegunn/vim-plug>
 
 2. Copy configs
