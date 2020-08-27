@@ -62,6 +62,8 @@ if has('nvim')
 	map <silent> <F11>   <Esc>:call GuiWindowFullScreen(1)<CR>
 	map <silent> <S-F11> <Esc>:call GuiWindowFullScreen(0)<CR>
 
+	GuiTabline 0
+
 	GuiFont! Anonymice Powerline:h11
 	" GuiFont! DejaVu Sans Mono:h10
 	" GuiFont! Source Code Pro:h10
