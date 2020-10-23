@@ -64,7 +64,7 @@ let mapleader=" "
 
 " nvim only?
 if has('nvim')
-	" let g:python3_host_prog='C:/Python33/python'
+	let g:python_host_prog='C:/Python27/python'
 	let g:python3_host_prog='C:/Python36/python'
 endif
 
@@ -181,8 +181,12 @@ Plug 'asilentpenguin/zeavim.vim'
 " 		\	'<Plug>ZVKeyDocset',
 " 		\	'<Plug>ZVMotion'
 " 		\ ]}
-let g:zv_zeal_executable = 'd:/usr/zeal/zeal.exe'
-let g:zv_docsets_dir = 'd:/usr/zeal/docsets/'
+let g:zv_zeal_executable = "c:/usr/zeal/zeal.exe"
+let g:zv_docsets_dir = "c:/usr/zeal/docsets/"
+" let g:zv_zeal_executable = "c:/Program\ Files/Zeal/zeal.exe"
+" let g:zv_docsets_dir = "c:/Program\ Files/Zeal/docsets/"
+" let g:zv_zeal_executable = '"/c/Program\ Files/Zeal/zeal.exe"'
+" let g:zv_docsets_dir = '"/c/Program\ Files/Zeal/docsets/"'
 
 " ...
 " Plug 'vim-scripts/phpfolding.vim'
@@ -431,7 +435,7 @@ augroup PHP
 	" Check for PHP syntax errors after saving a file
 	" autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
 
-	" autocmd BufEnter *.html :setlocal filetype=php
+	autocmd BufEnter *.html :setlocal filetype=php
 
 	if has('python3')
 		let g:vdebug_options = {
