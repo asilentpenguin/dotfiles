@@ -173,9 +173,8 @@ xmap gs  <plug>(GrepperOperator)
 
 
 " ...
-" Plug 'KabbAmine/zeavim.vim'
 Plug 'asilentpenguin/zeavim.vim'
-" Plug 'asilentpenguin/zeavim.vim', {'on': [
+" Plug 'KabbAmine/zeavim.vim', {'on': [
 " 		\	'Zeavim', 'Docset',
 " 		\	'<Plug>Zeavim',
 " 		\	'<Plug>ZVVisSelection',
@@ -208,7 +207,7 @@ let g:markology_enable = 0
 
 "
 if has('python3')
-	Plug 'vim-vdebug/vdebug'
+	" Plug 'vim-vdebug/vdebug'
 endif
 
 "
@@ -244,7 +243,9 @@ let g:pymode_run_bind = '<leader>R'
 
 "
 Plug 'vim-scripts/sql.vim--Stinson'
-" Plug 'vim-scripts/SQLUtilities'
+Plug 'vim-scripts/SQLUtilities'
+" Plug 'mattn/vim-sqlfmt'
+" Plug 'vim-scripts/dbext.vim'
 
 "
 Plug 'leafOfTree/vim-vue-plugin'
@@ -422,8 +423,9 @@ set showtabline=2
 set tags=./.tags-y;,./.git/tags-y
 
 
-" gvim only
+" php
 augroup PHP
+
 	" Clear all autocmd's in this group before running them again
 	autocmd!
 
@@ -434,26 +436,26 @@ augroup PHP
 	" autocmd BufWritePost {*.php} echom system("php -l ".expand('%'))
 
 	autocmd BufEnter *.html :setlocal filetype=php
-"
-if has('python3')
-	let g:vdebug_options = {
-				\ 'path_maps' : {"/www/": "y:/"},
-				\ 'break_on_open' : 0,
-				\ }
-	" exec 'VdebugPathMap "/www/" "y:/"'
-	" exec 'VdebugOpt break_on_open 0'
-	" let g:vdebug_options.path_maps = {"/www/": "y:/"}
-	" let g:vdebug_options.break_on_open = 0
-endif
 
+	if has('python3')
+		let g:vdebug_options = {
+					\ 'path_maps' : {"/www/": "y:/"},
+					\ 'break_on_open' : 0,
+					\ }
+		" exec 'VdebugPathMap "/www/" "y:/"'
+		" exec 'VdebugOpt break_on_open 0'
+		" let g:vdebug_options.path_maps = {"/www/": "y:/"}
+		" let g:vdebug_options.break_on_open = 0
+	endif
 
 augroup END
-" gvim only
 
-" autocomplete
-" autocmd FileType php set omnifunc=phpcomplete#CompletePHP   " nvim only?  (gvim uses it in an `augroup`)
+" php autocomplete
+" autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
-" nvim only
+" json folding
+autocmd FileType json set foldmethod=syntax
+
 " Quickfix is always bottom, on its own 'row'
 autocmd FileType qf wincmd J
 " Quickfix - fix for <CR>
@@ -567,7 +569,7 @@ map <silent> <Leader>w <Plug>CamelCaseMotion_w
 map <silent> <Leader>B <Plug>CamelCaseMotion_b
 
 "
-nnoremap <silent> <Space> :noh<CR>:<backspace>
+nnoremap <silent> \ :noh<CR>:<backspace>
 
 " Copy file path to system clipboard
 nnoremap <silent> <Leader>cp :let @+=expand("%:p")<CR>
@@ -626,7 +628,7 @@ function! LoadSession()
 	set titlestring=%{g:LoadSessionName}:\ %t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
 	exec 'source ' . g:LoadSessionFilePath
 	let g:LoadSessionStartupPath = fnamemodify(g:LoadSessionFilePath, ":h") . '/' . g:LoadSessionName . '.html'
-	if filereadable(g:LoadSessionStartupPath)
+	if filereadable(g:LoadSessionStartupPath) && confirm('Startup (html) file found. Load it?', "&Yes\n&no") == 1
 		silent call OpenBrowser('file://' . g:LoadSessionStartupPath)
 	endif
 endfunction
