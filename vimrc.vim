@@ -181,15 +181,11 @@ Plug 'asilentpenguin/zeavim.vim'
 " 		\	'<Plug>ZVKeyDocset',
 " 		\	'<Plug>ZVMotion'
 " 		\ ]}
-let g:zv_zeal_executable = "c:/usr/zeal/zeal.exe"
-let g:zv_docsets_dir = "c:/usr/zeal/docsets/"
-" let g:zv_zeal_executable = "c:/Program\ Files/Zeal/zeal.exe"
-" let g:zv_docsets_dir = "c:/Program\ Files/Zeal/docsets/"
-" let g:zv_zeal_executable = '"/c/Program\ Files/Zeal/zeal.exe"'
-" let g:zv_docsets_dir = '"/c/Program\ Files/Zeal/docsets/"'
+let g:zv_zeal_executable = 'c:\Program Files\Zeal\zeal.exe'
+let g:zv_docsets_dir = 'c:\Program Files\Zeal\docsets\'
 
 " ...
-" Plug 'vim-scripts/phpfolding.vim'
+Plug 'vim-scripts/phpfolding.vim'
 nmap <Leader>pf <Esc>:EnableFastPHPFolds<CR>
 nmap <Leader>pF <Esc>:EnablePHPFolds<CR>
 nmap <Leader>pdf <Esc>:DisablePHPFolds<CR>
@@ -485,7 +481,7 @@ vnoremap <Leader>q :TComment<CR>
 imap <C-a> <ESC>I
 imap <C-e> <ESC>A
 inoremap <M-f> <ESC><Space>Wi
-inoremap <M-b> <Esc>Bi
+" inoremap <M-b> <Esc>Bi " GV sees 'â' as <M-b>
 inoremap <M-d> <C-O>de
 " inoremap <M-d> <ESC>cW
 inoremap <C-d> <C-O>x
